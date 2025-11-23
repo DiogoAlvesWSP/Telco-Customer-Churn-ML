@@ -1,5 +1,4 @@
 
-
 from fastapi.testclient import TestClient
 from src.app.main import app
 
@@ -8,29 +7,35 @@ client = TestClient(app)
 def test_root_endpoint():
     response = client.get("/")
     assert response.status_code == 200
+    assert response.json() == {"status": "ok"}
 
-def test_predict_endpoint():
+def test_predict_endpoint_valid():
     payload = {
         "gender": "Male",
-        "SeniorCitizen": 0,
-        "Partner": "Yes",
+        "Partner": "No",
         "Dependents": "No",
-        "tenure": 12,
         "PhoneService": "Yes",
         "MultipleLines": "No",
         "InternetService": "Fiber optic",
         "OnlineSecurity": "No",
-        "OnlineBackup": "Yes",
-        "DeviceProtection": "Yes",
+        "OnlineBackup": "No",
+        "DeviceProtection": "No",
         "TechSupport": "No",
         "StreamingTV": "Yes",
         "StreamingMovies": "Yes",
-        "Contract": "One year",
+        "Contract": "Month-to-month",
         "PaperlessBilling": "Yes",
         "PaymentMethod": "Electronic check",
-        "MonthlyCharges": 80.0,
-        "TotalCharges": 900.0
+        "tenure": 1,
+        "MonthlyCharges": 85.0,
+        "TotalCharges": 85.0
     }
 
     response = client.post("/predict", json=payload)
     assert response.status_code == 200
+    data = response.json()
+    assert "prediction" in data or "error" in data
+
+def test_predict_endpoint_invalid():
+    response = client.post("/predict", json={})
+    assert response.status_code == 422

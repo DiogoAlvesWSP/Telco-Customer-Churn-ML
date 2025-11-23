@@ -78,5 +78,7 @@ jobs:
 
       - name: Deploy to Elastic Beanstalk
         run: |
-          eb init telco-churn-env --platform docker --region ${{ secrets.AWS_REGION }}
+          eb init telco-churn-env \
+          --platform "Docker running on 64bit Amazon Linux 2" \
+          --region ${{ secrets.AWS_REGION }}
           eb deploy
