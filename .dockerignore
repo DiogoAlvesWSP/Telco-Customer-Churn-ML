@@ -1,2 +1,29 @@
+# Pastas que nunca devem ir para a imagem
+venv/
+__pycache__/
+notebooks/
+data/
+docker-compose.yml
+*.ipynb
+
+# Ficheiros de sistema
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore
+
+# Logs
+*.log
+logs/
+
+# Caches de Python
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+
 data/
 notebooks/
