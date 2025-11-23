@@ -1,0 +1,38 @@
+name: Development CI - Code Quality + Tests
+
+on:
+  push:
+    branches:
+      - dev
+      - "feature/*"
+      - "bugfix/*"
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+
+  quality_and_tests:
+    name: Linting, Pre-Commit & Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pre-commit
+
+      - name: Run pre-commit
+        run: pre-commit run --all-files
+
+      - name: Run unit tests
+        run: pytest -q
